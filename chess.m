@@ -16,6 +16,9 @@ for ri=1:(size(full_img,1) - scan_size),
 		img = imresize(img, [test_size test_size]);
 		flatimg = [1 img(:)'];
 		prob = sigmoid(flatimg*theta);
+		%one vs all prediction
+		%p1 = sigmoid(X*all_theta');
+		%[val, p] =  max(p1, [], 2);
 		if  prob > 0.5,
 			fname = sprintf("d%i%i.png", ri, ci);
 			%imwrite(img, fname);

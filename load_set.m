@@ -1,23 +1,14 @@
-function [Xpos, Xneg, ypos, yneg] = load_set(set_dir, file_ext)
+function [X, y] = load_set(set_dir, file_ext, y_label)
 	% change to directory with set of examples, positive examples are located in pos, negative in neg
 
 	save_dir = pwd;
 	% Load examples
 	cd(set_dir);
-
-	% positive examples
-	cd("pos");
-	Xpos = [];
-	ypos = [];
-	[Xpos, ypos] = do_imread(file_ext, 1);
-	cd("..");
-
-	% negative examples
-	cd("neg");
-	Xneg = [];
-	yneg = [];
-	[Xneg, yneg] = do_imread(file_ext, 0);
-	cd("..");
+	
+	X = [];
+	y = [];
+	[X, y] = do_imread(file_ext, y_label);
+	
 	cd(save_dir);
 endfunction
 
