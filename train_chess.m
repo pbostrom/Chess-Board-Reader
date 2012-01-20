@@ -33,6 +33,8 @@ num_labels = 27
 X = [X1; X2; X3; X4; X5; X6; X7; X8; X9; X10; X11; X12; X13; X14; X15; X16; X17; X18; X19; X20; X21; X22; X23; X24; X25; X26; X27];
 y = [y1; y2; y3; y4; y5; y6; y7; y8; y9; y10; y11; y12; y13; y14; y15; y16; y17; y18; y19; y20; y21; y22; y23; y24; y25; y26; y27];
 
+save chessData.mat X y;
+
 % Some useful variables
 m = size(X, 1);
 n = size(X, 2);
@@ -54,6 +56,6 @@ for c = 1:num_labels,
 	all_theta(c,:) = theta;
 end
 
-save all_theta.mat all_theta; 
+save all_theta.mat all_theta;
 %ppos = sigmoid(Xpos*theta);
 %pneg = sigmoid(Xneg*theta);
