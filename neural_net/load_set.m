@@ -1,4 +1,4 @@
-function [X, y] = load_set(set_dir, file_ext, y_label)
+function [X, y] = load_set(set_dir, file_ext, y_index, num_labels)
 	% change to directory with set of examples, positive examples are located in pos, negative in neg
 
 	save_dir = pwd;
@@ -7,6 +7,8 @@ function [X, y] = load_set(set_dir, file_ext, y_label)
 	
 	X = [];
 	y = [];
+    y_label = zeros(num_labels,1);
+	y_label(y_index) = 1;
 	[X, y] = do_imread(file_ext, y_label);
 	
 	cd(save_dir);
@@ -26,7 +28,7 @@ function [X, y] = do_imread(file_ext, y_label)
 			continue;
 		end
 		X = [X; img(:)'];
-		y = [y; y_label];
+		y = [y y_label];
 	end
 endfunction
 

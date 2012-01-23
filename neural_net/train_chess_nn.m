@@ -20,8 +20,8 @@ clear ; close all; clc
 
 %% Setup the parameters you will use for this exercise
 input_layer_size  = 900;  % 30x30 Input Images of Digits
-hidden_layer_size = 450;   % 450 hidden units
-num_labels = 5;          % 27 labels
+hidden_layer_size = 1800;   % 1800 hidden units
+num_labels = 27;          % 27 labels
 
 %% =========== Part 1: Loading and Visualizing Data =============
 %  We start the exercise by first loading and visualizing the dataset. 
@@ -90,7 +90,9 @@ costFunction = @(p) nnCostFunction(p, ...
 
 % Now, costFunction is a function that takes in only one argument (the
 % neural network parameters)
+tic;
 [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
+toc;
 
 % Obtain Theta1 and Theta2 back from nn_params
 Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
@@ -123,6 +125,7 @@ pause;
 
 pred = predict(Theta1, Theta2, X);
 
-fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == y)) * 100);
+[dummy, yp] = max(y, [], 1);
+fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == yp')) * 100);
 
 save nnTheta.mat Theta1 Theta2;

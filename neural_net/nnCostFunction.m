@@ -30,36 +30,6 @@ J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
 
-% ====================== YOUR CODE HERE ======================
-% Instructions: You should complete the code by working through the
-%               following parts.
-%
-% Part 1: Feedforward the neural network and return the cost in the
-%         variable J. After implementing Part 1, you can verify that your
-%         cost function computation is correct by verifying the cost
-%         computed in ex4.m
-
-%{
-Jm = 0; % J*m
-for i = 1:m
-	Xwith1 = [1; X(i,:)'];
-	z2=Theta1*Xwith1;
-	a2 = sigmoid(z2);
-
-	a2with1=[1; a2];
-	z3=Theta2*a2with1;
-	a3=sigmoid(z3);
-	yvec = zeros(num_labels,1);
-	yvec(y(i)) = 1;
-
-	Jm = Jm + sum(-yvec.*log(a3) - (1-yvec).*log(1-a3));
-end
-J = Jm/m;
-
-reg = (lambda/(2*m))*(sum(sum(Theta1(:,[2:end]).^2)) + sum(sum(Theta2(:,[2:end]).^2)));
-
-J = J + reg;
-%}
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
@@ -77,18 +47,17 @@ J = J + reg;
 %               first time.
 %
 
+%{
 Jm = 0; % J*m
 for i = 1:m
 	Xwith1 = [1; X(i,:)'];
-	%X_1=[ones(m, 1) X];
 	z2=Theta1*Xwith1;
 	a2 = sigmoid(z2);
 
 	a2with1=[1; a2];
 	z3=Theta2*a2with1;
 	a3=sigmoid(z3);
-	yvec = zeros(num_labels,1);
-	yvec(y(i)) = 1;
+    yvec = y(i);
 	
 	Jm = Jm + sum(-yvec.*log(a3) - (1-yvec).*log(1-a3));
 	
@@ -97,8 +66,30 @@ for i = 1:m
 	d2 = d2(2:end); % remove 0th element
 	Theta1_grad = Theta1_grad + d2*(Xwith1');
 	Theta2_grad = Theta2_grad + d3*([1;a2]');
-	
+    size(d3)
+    size(Theta2_grad)
+    pause;
 end
+%}
+
+
+
+Xwith1 = [ones(m,1) X];
+z2=Xwith1*Theta1';
+a2 = sigmoid(z2);
+
+a2with1=[ones(m,1) a2];
+z3=a2with1*Theta2';
+a3=sigmoid(z3);
+	
+Jm = sum(sum(-y'.*log(a3) - (1-y').*log(1-a3)));
+	
+d3 = a3 - y';
+d2 = (d3*Theta2).*sigmoidGradient([ones(m,1) z2]);
+d2 = d2(:,2:end); % remove 0th element
+Theta1_grad = d2'*Xwith1;
+Theta2_grad = d3'*[ones(m,1) a2];
+
 
 J = Jm/m;
 
